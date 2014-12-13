@@ -337,8 +337,11 @@ func TestInlineLink(t *testing.T) {
 		"[foo with a title](/bar/ title with no quotes)\n",
 		"<p><a href=\"/bar/ title with no quotes\">foo with a title</a></p>\n",
 
-		"[foo]()\n",
-		"<p>[foo]()</p>\n",
+		//"[foo]()\n",
+		//"<p>[foo]()</p>\n",
+
+		"[Wiki Link]()\n",
+		"<p><a href=\"/WIKI/wiki-link\">Wiki Link</a></p>\n",
 
 		"![foo](/bar/)\n",
 		"<p><img src=\"/bar/\" alt=\"foo\" />\n</p>\n",

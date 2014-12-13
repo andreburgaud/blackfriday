@@ -488,6 +488,7 @@ func link(p *parser, out *bytes.Buffer, data []byte, offset int) int {
 		}
 	}
 
+/*
 	var uLink []byte
 	if t == linkNormal || t == linkImg {
 		if len(link) > 0 {
@@ -501,6 +502,32 @@ func link(p *parser, out *bytes.Buffer, data []byte, offset int) int {
 			return 0
 		}
 	}
+*/
+
+	// BEGIN WIKI LINKS
+	var uLink []byte
+	if t == linkNormal || t == linkImg {
+		var uLinkBuf bytes.Buffer
+		if len(link) > 0 {
+			//var uLinkBuf bytes.Buffer
+			unescapeText(&uLinkBuf, link)
+			uLink = uLinkBuf.Bytes()
+		} else {
+			// Wiki link: format [Wiki Link]()
+			// Build a fake link to be parsed by the wiki engine
+			// After markdown parsing, [Wiki Link]() gives <a href="/WIKI/wiki-link">Wiki Link</a>
+			if t == linkNormal {
+				slug := bytes.ToLower(slugify(content.Bytes()))
+				unescapeText(&uLinkBuf, append([]byte("/WIKI/"), slug...))
+				uLink = uLinkBuf.Bytes()
+			}
+		}
+		// links need something to click on and somewhere to go
+		if len(uLink) == 0 || (t == linkNormal && content.Len() == 0) {
+			return 0
+		}
+	}
+	// END WIKI LINK
 
 	// call the relevant rendering function
 	switch t {
