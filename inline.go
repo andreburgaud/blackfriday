@@ -518,7 +518,7 @@ func link(p *parser, out *bytes.Buffer, data []byte, offset int) int {
 			// After markdown parsing, [Wiki Link]() gives <a href="/WIKI/wiki-link">Wiki Link</a>
 			if t == linkNormal {
 				slug := bytes.ToLower(slugify(content.Bytes()))
-				unescapeText(&uLinkBuf, append([]byte("/WIKI/"), slug...))
+				unescapeText(&uLinkBuf, append([]byte("/page/"), slug...))
 				uLink = uLinkBuf.Bytes()
 			}
 		}
